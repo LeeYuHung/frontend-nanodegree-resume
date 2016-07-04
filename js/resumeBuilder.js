@@ -26,8 +26,24 @@ var projects = {
         "https://lh3.googleusercontent.com/-IhVc_Wxy6dY/AAAAAAAAAAI/AAAAAAAAAAA/fl45Fty4PEI/photo.jpg"
       ]
     }
-  ]
+  ],
+  display: function() {
+    for(idx in this.projects){
+      var $ProjectDom,
+          currentProject = this.projects[idx];
+      $("#projects").append(HTMLprojectStart);
+      $ProjectDom = $(".project-entry:last");
+      $ProjectDom.append(HTMLprojectTitle.replace("%data%", currentProject.title));
+      $ProjectDom.append(HTMLprojectDates.replace("%data%", currentProject.dates));
+      $ProjectDom.append(HTMLprojectDescription.replace("%data%", currentProject.description));
+      currentProject.images.forEach(function(img) {
+        $ProjectDom.append(HTMLprojectImage.replace("%data%", img));
+      });
+    }
+  }
 }
+
+projects.display();
 
 var bio = {
   "name": "John Doe",
@@ -73,8 +89,18 @@ var education = {
   ]
 }
 
+function inName(full_name) {
+  var first_name= full_name.split(" ")[0];
+  var last_name = full_name.split(" ")[1];
+  var international_name;
+  first_name = first_name.charAt(0).toUpperCase() + first_name.slice(1).toLowerCase();
+  last_name = last_name.toUpperCase();
+  international_name = first_name + " " + last_name;
 
-$("#header").append(HTMLheaderName.replace("%data%", bio.name));
+  return international_name;
+}
+
+$("#header").append(HTMLheaderName.replace("%data%", inName(bio.name)));
 if(bio["skills"]) {
   $("#header").append(HTMLskillsStart);
   for(idx in bio.skills){
@@ -98,15 +124,4 @@ displayWork();
 
 $("#main").append(internationalizeButton);
 
-function inName(full_name) {
-  var first_name= full_name.split(" ")[0];
-  var last_name = full_name.split(" ")[1];
-  var international_name;
-  first_name = first_name.charAt(0).toUpperCase() + first_name.slice(1).toLowerCase();
-  last_name = last_name.toUpperCase();
-  international_name = first_name + " " + last_name;
-
-  return international_name;
-}
-
-console.log(inName("Huey Lee"));
+$("#mapDiv").append(googleMap);
